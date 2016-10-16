@@ -5,7 +5,7 @@
 #include "uptime.h"
 
 // "Do not switch module on and off rapidly for extended periods,
-// minimum on time should be 10 seconds."
+//  minimum on time should be 10 seconds."
 #define HVPS_MINIMUM_POWER_ON_SECONDS 10
 
 /**
@@ -26,11 +26,18 @@ class HVPS
     void on();
 
     /**
-     * Try to switch the HVPS off. WARNING: It can take up to 10 seconds to switch the supply off.
+     * Try to switch the HVPS off. 
+     * WARNING: It can take up to HVPS_MINIMUM_POWER_ON_SECONDS to actually switch the supply off.
      */
     void off();
 
     bool isOn();
+
+
+    /**
+     * Calculate the rAdjust value required for a given output voltage (assuming that vAdjust is 0V).
+     * (Works in the range 152V to 200V.)
+     */    
     float rAdjustKOhmsForVOut(int vOut);
   private:
     int _enablePin;
