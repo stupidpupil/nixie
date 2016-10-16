@@ -78,7 +78,7 @@ class SmartNixie
     String _characters;
     SmartNixieState _currentState;
     SmartNixieState _savedState;
-    bool setCharReg(int value);
+    bool setCharReg(byte value);
 
 };
 

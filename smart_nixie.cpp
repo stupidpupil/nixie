@@ -21,9 +21,9 @@ bool SmartNixie::setDimmer(int dimmer)
   return true;
 }
 
-bool SmartNixie::setCharReg(int value)
+bool SmartNixie::setCharReg(byte value)
 {
-  if( (value < 0) || ((value >= (int) _characters.length()) && (value != SMART_NIXIE_BLANK_CHARACTER)) ) return false;
+  if( (_characters.length() > value) && (value != SMART_NIXIE_BLANK_CHARACTER)) return false;
   Wire.beginTransmission(_i2c_address);
   Wire.write(byte(SMART_NIXIE_REGISTER_CHARACTER));
   Wire.write(byte(value));
@@ -42,7 +42,7 @@ bool SmartNixie::setCharacter(char character)
   Serial.println(character);
 
   _currentState.character = character;
-  return setCharReg(charRegValue);
+  return setCharReg((byte) charRegValue);
 }
 
 bool SmartNixie::hasCharacter(char character)
