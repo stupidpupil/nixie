@@ -1,6 +1,6 @@
 #include "hvps.h"
 
-HVPS::HVPS(int enablePin)
+HVPS::HVPS(byte enablePin)
 {
   _enablePin = enablePin;
   pinMode(_enablePin, OUTPUT);

@@ -18,7 +18,7 @@
 class HVPS
 {
   public:
-    HVPS(int enablePin);
+    HVPS(byte enablePin);
 
     /**
      * Switch the HVPS on.
@@ -40,7 +40,7 @@ class HVPS
      */    
     float rAdjustKOhmsForVOut(int vOut);
   private:
-    int _enablePin;
+    byte _enablePin;
     unsigned long _earliestPowerOff;
 };
 
