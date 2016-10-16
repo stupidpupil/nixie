@@ -1,10 +1,5 @@
 #include "uptime.h"
 
-/*
-  Uptime in seconds
-  https://gist.github.com/AndiSHFR/1f8b71dbeae6ee9073e0
-*/
-
 unsigned long uptimeSeconds(void)
 {
   static unsigned int  _rolloverCount   = 0;    // Number of 0xFFFFFFFF rollover we had in millis()

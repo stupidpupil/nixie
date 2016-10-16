@@ -5,6 +5,11 @@
 extern "C" {
 #endif
 
+/*
+ * Free memory in bytes.
+ * http://playground.arduino.cc/Code/AvailableMemory
+ */
+
 int freeMemory();
 
 #ifdef  __cplusplus
