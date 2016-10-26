@@ -58,8 +58,22 @@ void command_SET(String arguments)
 
 }
 
+enum dimmerModeChoice {
+  fixed,
+  breathe
+};
+
+dimmerModeChoice dimmerMode = fixed;
+
 void command_DIM(String arguments)
 {
+
+  if (arguments == "BREATHE")
+  {
+    dimmerMode = breathe;
+    return;
+  }
+
   int targetDim = (int) arguments.toInt();
 
   if (targetDim < 1 || targetDim > 100)
@@ -69,8 +83,15 @@ void command_DIM(String arguments)
     return;
   }
 
+  dimmerMode = fixed;
+  setDimmerForAll(targetDim);
+
+}
+
+void setDimmerForAll(int targetDim)
+{
   for (int i = 0; i < numberOfNixies(); ++i)
-    {nixies[i].setDimmer(targetDim);}
+    {nixies[i].setDimmer(targetDim);}  
 }
 
 void command_HVPS(String arguments)
@@ -89,6 +110,8 @@ void command_HVPS(String arguments)
   Serial.print(F("Main - ERR - Unknown HVPS arg: "));   
   Serial.println(arguments);
 }
+
+
 
 struct Command commands[] = {
   {"SET", command_SET},
@@ -151,7 +174,16 @@ void loop()
       antidote();
     }
   }
-  
+
+  switch(dimmerMode) {
+    case fixed:
+      break;
+    case breathe:
+      int dv = 1+(exp(sin(millis()/1800.0*PI)) - 0.36787944)*41.6;
+      setDimmerForAll(dv);
+      break;
+  }
+
   while(Serial.available() > 0) {
     String command;
     command = Serial.readStringUntil('\n');
