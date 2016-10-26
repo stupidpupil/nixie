@@ -3,6 +3,7 @@
 #include "hvps.h"
 #include "smart_nixie.h"
 #include "memory_free.h"
+#include "command.h"
 
 HVPS hvps(13);
 SmartNixie nixies[] = {
@@ -89,35 +90,12 @@ void command_HVPS(String arguments)
   Serial.println(arguments);
 }
 
-struct Command {
-  String name;
-  void (*function)(String);
-};
-
 struct Command commands[] = {
   {"SET", command_SET},
   {"DIM", command_DIM},
   {"HVPS", command_HVPS},
   {"STATUS", command_STATUS}
 };
-
-void evaluateCommand(String cmnd)
-{
-
-  struct Command *scan;
-  for (scan = commands;  scan -> function; scan++)
-  {
-    if ( cmnd.substring(0, scan -> name.length()) == scan->name )
-    {
-      scan -> function( cmnd.substring(scan -> name.length() + 1) );
-      return;
-    }
-  }
-
-  Serial.print(F("Main - ERR - Unknown command: "));   
-  Serial.println(cmnd);
-}
-
 
 /*
   Main Arduino functions
@@ -173,11 +151,11 @@ void loop()
       antidote();
     }
   }
-
+  
   while(Serial.available() > 0) {
     String command;
     command = Serial.readStringUntil('\n');
-    evaluateCommand(command);
+    evaluateCommand(commands, command);
     resetIdle();
   }
 }
