@@ -5,11 +5,11 @@
 #include "memory_free.h"
 #include "command.h"
 
-HVPS hvps(13);
+HVPS hvps(12);
 SmartNixie nixies[] = {
-  SmartNixie(0x08), 
-  SmartNixie(0x09),
-  SmartNixie(0x10, SMART_NIXIE_IN15A_CHARS)
+  SmartNixie(0x0B), 
+  SmartNixie(0x10)/*,
+  SmartNixie(0x10, SMART_NIXIE_IN15A_CHARS)*/
 };
 
 int numberOfNixies()
@@ -27,11 +27,24 @@ void command_STATUS(String arguments)
   Serial.print(F("Nixies: "));
   Serial.println(numberOfNixies());
 
+  for (int i = 0; i < numberOfNixies(); ++i)
+  {
+    if(!nixies[i].exists())
+    {
+      Serial.print(F("Nixie "));
+      Serial.print(i+1);
+      Serial.print(" is missing");
+      Serial.println();
+    }
+  }
+
   Serial.print(F("HVPS is on? "));
   Serial.println(hvps.isOn());
 
   Serial.print(F("Free memory: "));
   Serial.println(freeMemory());
+
+
 }
 
 void command_SET(String arguments)
