@@ -6,6 +6,9 @@ SmartNixie::SmartNixie(byte i2c_address, String characters)
   _characters = characters; //characters shouldn't be longer than 12 (and won't be longer than 9)
 }
 
+bool SmartNixie::is
+
+
 bool SmartNixie::setDimmer(int dimmer)
 {
   if((dimmer < 0) || (dimmer > 100)) return false;
@@ -17,20 +20,21 @@ bool SmartNixie::setDimmer(int dimmer)
   Wire.beginTransmission(_i2c_address);
   Wire.write(byte(SMART_NIXIE_REGISTER_DIMMER));
   Wire.write(byte(dimmer));
-  Wire.endTransmission();
-  return true;
+  byte error = Wire.endTransmission();
+  return (error == 0);
 }
 
 bool SmartNixie::setCharReg(byte value)
 {
-  if( (_characters.length() > value) && (value != SMART_NIXIE_BLANK_CHARACTER)) return false;
+
+  if( (value > _characters.length()) && (value != SMART_NIXIE_BLANK_CHARACTER)) return false;
   Wire.beginTransmission(_i2c_address);
   Wire.write(byte(SMART_NIXIE_REGISTER_CHARACTER));
   Wire.write(byte(value));
-  Wire.endTransmission();
-  return true;
-}
+  byte error = Wire.endTransmission();
 
+  return (error == 0);
+}
 
 bool SmartNixie::setCharacter(char character)
 {
