@@ -46,6 +46,13 @@ class SmartNixie
     SmartNixie(byte i2c_address, String characters = SMART_NIXIE_IN12_CHARS);
 
     /**
+     * Check if this SmartNixie is responding over I2C.
+     */
+
+    bool exists();
+
+
+    /**
      * Check if this SmartNixie can display a particular character.
      *
      * @param character

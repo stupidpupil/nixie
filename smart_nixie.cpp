@@ -6,7 +6,12 @@ SmartNixie::SmartNixie(byte i2c_address, String characters)
   _characters = characters; //characters shouldn't be longer than 12 (and won't be longer than 9)
 }
 
-bool SmartNixie::is
+bool SmartNixie::exists()
+{
+  Wire.beginTransmission(_i2c_address);
+  byte error = Wire.endTransmission();
+  return (error == 0);
+}
 
 
 bool SmartNixie::setDimmer(int dimmer)
