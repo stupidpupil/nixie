@@ -1,6 +1,9 @@
 #include <Wire.h>
 #include "uptime.h"
 #include "hvps.h"
+#include "dim_strategy.h"
+#include "dim_strategy_static.h"
+#include "dim_strategy_breathe.h"
 #include "smart_nixie.h"
 #include "memory_free.h"
 #include "command.h"
@@ -11,6 +14,9 @@ SmartNixie nixies[] = {
   SmartNixie(0x10)/*,
   SmartNixie(0x10, SMART_NIXIE_IN15A_CHARS)*/
 };
+
+DimStrategy* dimStrategy = new DimStrategyStatic(0);
+int currentDimmer = 0;
 
 int numberOfNixies()
 {
@@ -71,19 +77,12 @@ void command_SET(String arguments)
 
 }
 
-enum dimmerModeChoice {
-  fixed,
-  breathe
-};
-
-dimmerModeChoice dimmerMode = fixed;
-
 void command_DIM(String arguments)
 {
 
   if (arguments == "BREATHE")
   {
-    dimmerMode = breathe;
+    dimStrategy = new DimStrategyBreathe(currentDimmer);
     return;
   }
 
@@ -92,19 +91,22 @@ void command_DIM(String arguments)
   if (targetDim < 1 || targetDim > 100)
   {
     Serial.print(F("Main - ERR - Invalid DIM arg: "));
-    Serial.println(arguments);   
+    Serial.println(arguments);
     return;
   }
 
-  dimmerMode = fixed;
-  setDimmerForAll(targetDim);
-
+  dimStrategy = new DimStrategyStatic(targetDim);
 }
 
 void setDimmerForAll(int targetDim)
 {
+  if (targetDim == currentDimmer)
+    {return;}
+
   for (int i = 0; i < numberOfNixies(); ++i)
     {nixies[i].setDimmer(targetDim);}  
+
+  currentDimmer = targetDim;
 }
 
 void command_HVPS(String arguments)
@@ -166,14 +168,13 @@ void setup()
   while (!Serial) {}
 
   Wire.begin();
-
   Serial.println(F("Main - INFO - Ready"));
   resetIdle();
 }
 
 void loop()
 {
-  delay(250);
+  delay(25);
 
   if ( hvps.isOn() )
   {
@@ -188,20 +189,14 @@ void loop()
     }
   }
 
-  switch(dimmerMode) {
-    case fixed:
-      break;
-    case breathe:
-      int dv = 1+(exp(sin(millis()/1800.0*PI)) - 0.36787944)*41.6;
-      setDimmerForAll(dv);
-      break;
-  }
-
   while(Serial.available() > 0) {
     String command;
     command = Serial.readStringUntil('\n');
     evaluateCommand(commands, command);
     resetIdle();
   }
+
+  setDimmerForAll(dimStrategy->nextDimmer());
+
 }
 
