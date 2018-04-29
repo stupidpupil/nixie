@@ -4,12 +4,14 @@ HVPS::HVPS(byte enablePin)
 {
   _enablePin = enablePin;
   pinMode(_enablePin, OUTPUT);
-  _earliestPowerOff = uptimeSeconds() + HVPS_MINIMUM_POWER_ON_SECONDS;
+  digitalWrite(_enablePin, LOW);
+  _earliestPowerOff = uptimeSeconds();
 }
 
 void HVPS::on()
 {
   Serial.println(F("HVPS - INFO - On"));
+  pinMode(_enablePin, OUTPUT);
   digitalWrite(_enablePin, HIGH);
   _earliestPowerOff = uptimeSeconds() + HVPS_MINIMUM_POWER_ON_SECONDS;
 }
