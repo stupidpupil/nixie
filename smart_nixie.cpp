@@ -4,6 +4,8 @@ SmartNixie::SmartNixie(byte i2c_address, String characters)
 {
   _i2c_address = i2c_address;
   _characters = characters; //characters shouldn't be longer than 12 (and won't be longer than 9)
+  _currentState = (SmartNixieState) {' ', 100};
+  _savedState = _currentState;
 }
 
 bool SmartNixie::exists()
