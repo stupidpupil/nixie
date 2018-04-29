@@ -8,10 +8,10 @@
 #include "memory_free.h"
 #include "command.h"
 
-HVPS hvps(12);
+HVPS hvps(5);
 SmartNixie nixies[] = {
-  SmartNixie(0x0B), 
-  SmartNixie(0x10)/*,
+  SmartNixie(0x09), 
+  SmartNixie(0x08)/*,
   SmartNixie(0x10, SMART_NIXIE_IN15A_CHARS)*/
 };
 
