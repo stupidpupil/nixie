@@ -10,14 +10,13 @@ const short lookupTableMax = 125;
 
 const short period = 4983; // Selected to minimise millis() rollover impact
 
-const int maxDimmer = 95;
-const int minDimmer = 20;
-int dimmerRange = maxDimmer - minDimmer;
-
-DimStrategyBreathe::DimStrategyBreathe(byte currentDimmer)
+DimStrategyBreathe::DimStrategyBreathe(byte currentDimmer, int minD, int maxD)
 {
-  if (currentDimmer > maxDimmer)
-    {currentDimmer = maxDimmer;}
+  if (currentDimmer > maxD)
+    {currentDimmer = maxD;}
+
+  minDimmer = minD;
+  dimmerRange = maxD - minD;
 
   // Try to offset the period so that we start at roughly the current brightness
   offsetMillis = lookupTable[(currentDimmer*lookupTableMax/dimmerRange)];

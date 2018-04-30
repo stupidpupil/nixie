@@ -82,7 +82,7 @@ void command_DIM(String arguments)
 
   if (arguments == "BREATHE")
   {
-    dimStrategy = new DimStrategyBreathe(currentDimmer);
+    dimStrategy = new DimStrategyBreathe(currentDimmer, 50, 99);
     return;
   }
 

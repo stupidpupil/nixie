@@ -7,11 +7,13 @@
 class DimStrategyBreathe : public DimStrategy
 {
   public:
-    DimStrategyBreathe(byte currentDimmer);
+    DimStrategyBreathe(byte currentDimmer, int minD = 0, int maxD = 100);
     int nextDimmer();
 
   private:
     short offsetMillis;
+    int minDimmer;
+    int dimmerRange;
 };
 
 
