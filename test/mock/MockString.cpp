@@ -1,4 +1,4 @@
-#include "String.h"
+#include "MockString.h"
 
 String::String(const String &value){
   *this = value;

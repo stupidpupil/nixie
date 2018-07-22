@@ -1,6 +1,6 @@
 #pragma once
 
-#include "String.h"
+#include "MockString.h"
 #include "Serial.h"
 
 typedef unsigned char byte;

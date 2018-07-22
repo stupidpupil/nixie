@@ -5,6 +5,8 @@ class DimStrategy
 {
   public:
     virtual int nextDimmer() = 0;
+    virtual ~DimStrategy() = default;
+
 };
 
 #endif /* DIM_STRATEGY_H */
