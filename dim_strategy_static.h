@@ -7,6 +7,7 @@ class DimStrategyStatic : public DimStrategy
 {
   public:
     DimStrategyStatic(int dimmer);
+    virtual ~DimStrategyStatic() = default;
     int nextDimmer();
 
   private:

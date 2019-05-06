@@ -10,9 +10,9 @@
 
 HVPS hvps(5);
 SmartNixie nixies[] = {
-  SmartNixie(0x09), 
-  SmartNixie(0x08)/*,
-  SmartNixie(0x10, SMART_NIXIE_IN15A_CHARS)*/
+  SmartNixie(0x08),
+  SmartNixie(0x09),
+  SmartNixie(0x0a, SMART_NIXIE_IN15A_CHARS)
 };
 
 DimStrategy* dimStrategy = new DimStrategyStatic(0);
@@ -82,6 +82,7 @@ void command_DIM(String arguments)
 
   if (arguments == "BREATHE")
   {
+    delete dimStrategy;
     dimStrategy = new DimStrategyBreathe(currentDimmer, 50, 99);
     return;
   }
@@ -95,6 +96,7 @@ void command_DIM(String arguments)
     return;
   }
 
+  delete dimStrategy;
   dimStrategy = new DimStrategyStatic(targetDim);
 }
 
