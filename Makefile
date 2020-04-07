@@ -24,4 +24,4 @@ build/catch_tests: build/catch_main.o build/mock_arduino.o build/mock_wire.o bui
 		-o build/catch_tests
 
 clean:
-	rm build/*
+	rm -r build/*
