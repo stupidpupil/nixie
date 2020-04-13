@@ -10,9 +10,9 @@
 
 HVPS hvps(5);
 SmartNixie nixies[] = {
-  SmartNixie(0x09), 
-  SmartNixie(0x08)/*,
-  SmartNixie(0x10, SMART_NIXIE_IN15A_CHARS)*/
+  SmartNixie(0x08),
+  SmartNixie(0x09),
+  SmartNixie(0x0a, SMART_NIXIE_IN15A_CHARS)
 };
 
 DimStrategy* dimStrategy = new DimStrategyStatic(0);
@@ -82,7 +82,8 @@ void command_DIM(String arguments)
 
   if (arguments == "BREATHE")
   {
-    dimStrategy = new DimStrategyBreathe(currentDimmer, 50, 99);
+    delete dimStrategy;
+    dimStrategy = new DimStrategyBreathe(currentDimmer, 10, 35);
     return;
   }
 
@@ -95,6 +96,7 @@ void command_DIM(String arguments)
     return;
   }
 
+  delete dimStrategy;
   dimStrategy = new DimStrategyStatic(targetDim);
 }
 
@@ -174,9 +176,11 @@ void setup()
 
 void loop()
 {
+  String command;
+
   delay(25);
 
-  if ( hvps.isOn() )
+  /*if ( hvps.isOn() )
   {
     if ( ((uptimeSeconds() - idleSince) > 60) && ((uptimeSeconds() - lastRanAntidote) > 180) )
     {
@@ -187,10 +191,9 @@ void loop()
     {
       antidote();
     }
-  }
+  }*/
 
   while(Serial.available() > 0) {
-    String command;
     command = Serial.readStringUntil('\n');
     evaluateCommand(commands, command);
     resetIdle();
