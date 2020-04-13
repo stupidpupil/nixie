@@ -8,6 +8,7 @@ class DimStrategyBreathe : public DimStrategy
 {
   public:
     DimStrategyBreathe(byte currentDimmer, int minD = 0, int maxD = 100);
+    virtual ~DimStrategyBreathe() = default;
     int nextDimmer();
 
   private:
